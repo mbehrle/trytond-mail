@@ -18,6 +18,7 @@ from babel.numbers import format_currency
 from trytond.model import ModelView
 from trytond.tools import file_open
 from trytond.transaction import Transaction
+from nereid.templating import render_template
 
 
 class Mail(ModelView):
@@ -101,7 +102,7 @@ class Mail(ModelView):
             if isinstance(text_template, Template):
                 text = text_template.render(**context)
             else:
-                text = unicode(cls.render_template(text_template, **context))
+                text = unicode(render_template(text_template, **context))
             text_part = MIMEText(
                 text.encode("utf-8"), 'plain', _charset="UTF-8"
             )
@@ -111,7 +112,7 @@ class Mail(ModelView):
             if isinstance(html_template, Template):
                 html = html_template.render(**context)
             else:
-                html = unicode(cls.render_template(html_template, **context))
+                html = unicode(render_template(html_template, **context))
             html_part = MIMEText(html.encode("utf-8"), 'html', _charset="UTF-8")
 
         if text_part and html_part:
